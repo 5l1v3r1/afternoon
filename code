@@ -1,0 +1,43 @@
+import pygame
+import random
+pygame.init()
+win = pygame.display.set_mode((500,500))
+house = []
+class building:
+    def __init__(self, x, width, height, colour):
+        self.x = x
+        self.width = width
+        self.height = height
+        self.colour = colour
+for i in range(10):
+    house.append(building((51*i), random.randint(0,90), random.randint(100,200), (209,177,206)))
+for i in range(10):
+    house.append(building((50*i), random.randint(50,100), random.randint(40,50), (189, 157, 186)))
+house.append(building((500), 50, 500, (159, 127, 156)))
+def generate(house, win):
+    for i in house:
+        yield pygame.draw.rect(win, i.colour, (i.x, 500-i.height, i.width, i.height))
+while True:
+    for i in pygame.event.get():
+        if i.type == pygame.QUIT:
+            pygame.quit()
+    for i in house:
+        if i.colour == (209, 177, 206):
+            if i.x <= 0-i.width:
+                i.x = 500
+                i.height = random.randint(100,200)
+            i.x -= 2.5
+        if i.colour == (189, 157, 186):
+            if i.x <= 0-i.width:
+                i.x = 500
+                i.height = random.randint(40, 50)
+            i.x -= 7.5
+        if i.colour == (159, 127, 156):
+            if i.x <= -500:
+                i.x = 500
+            i.x -= 20
+    win.fill((229,197,226))
+    for i in generate(house, win):
+        i
+    pygame.time.Clock().tick(6000)
+    pygame.display.update()
